@@ -39,9 +39,8 @@
 $(document).ready(function(){
   var video = new Array();
 
-  video['webm'] = "http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v";
-  //video['webm'] = "http://bc05.ajnm.me/665003303001/665003303001_1475632346001_WEB-FFA-INTERNET--1555-26.mp4";
-  video['mp4'] = "http://bc05.ajnm.me/665003303001/665003303001_1475632346001_WEB-FFA-INTERNET--1555-26.mp4";
+  video['webm'] = "http://videos-cdn.mozilla.net/serv/webmademovies/silverhacks/Leader2-Vimeo%20HD.webm";
+  video['mp4'] = "http://videos-cdn.mozilla.net/serv/webmademovies/silverhacks/Leader2-Vimeo%20HD.mp4";
 
   var controlsVisible = true;
 
@@ -171,7 +170,7 @@ $(document).ready(function(){
 
   function initPopcorn(id) {  
     $('.panel-num').text('loading...');
-    var p = Popcorn.jplayer(id, video['webm'], {
+    var p = Popcorn.jplayer(id, video['mp4'], {
       size: {
           width: "100%",
           height: "100%",
@@ -299,10 +298,10 @@ if (top.location == self.location) {
 </head>
 <body>
   <div class="app-hldr">
+
     <div class="player-hldr">
       <div id="jp_container_1" class="jp-video jp-video-full">
         <div id="jquery_jplayer_1" class="jp-jplayer"></div>
-
           <!--main containers for our controls-->
             <div class="jp-gui">
               <div class="jp-video-play">
@@ -320,7 +319,7 @@ if (top.location == self.location) {
                   <li class="quality-switch" q="me"><a href="#">medium</a></li>
                   <li class="quality-switch" q="hi"><a href="#">high</a></li>
                   <li class="quality-switch" q="lo"><a href="#">HD</a></li>
-              </ul>
+                </ul>
               </div>
 
               <div class="jp-quality-ctrl" style="display:none">
@@ -329,13 +328,10 @@ if (top.location == self.location) {
                   <li><a class="quality-switch" q="me" href="#">med</a></li>
                   <li><a class="quality-switch" q="hi" href="#">high</a></li>
                   <li><a class="quality-switch" q="hd" href="#">HD</a></li>
-              </ul>
+                </ul>
               </div>
 
-              <div id ="fstimeline" class="fullscreen-info" style="display:none">
-              </div>
-
-
+              <div id ="fstimeline" class="fullscreen-info" style="display:none"></div>
               <!--<div class="jp-screen-loader"></div>-->
                 <div class="jp-interface">
                   <div class="jp-controls-holder">
@@ -391,6 +387,7 @@ if (top.location == self.location) {
         </div><!--end jp_container_1-->
       </div>
     </div> <!-- end .player-hldr -->
+
   </div> <!-- end .app-hldr -->
 </body>
 
