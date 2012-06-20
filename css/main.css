@@ -1,9 +1,10 @@
-body {
+body, html {
     font-family: Arial;
     font-size: 12px;
     margin: 0;
-    background-color: #111;
+    background-color: #222;
     padding: 0;
+    height:100%;
 }
 
 .app-hldr {
@@ -13,7 +14,7 @@ body {
 .player-hldr {
 	float: left;
 	width: 100%;
-  background-color: #111;
+  background-color: #222;
 }
 
 .player {
@@ -22,4 +23,10 @@ body {
 
 #jp_container_1 {
   z-index: 2;
+}
+
+#map_canvas{
+  margin: 0px 150px 0 150px;
+  height: 100%;
+  display: none;
 }

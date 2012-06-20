@@ -25,6 +25,7 @@
 <link rel="apple-touch-icon" sizes="72x72" href="icon-med.png" />
 <link rel="apple-touch-icon" sizes="114x114" href="icon-large.png" />
 <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>-->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
 <script type="text/javascript" src="js/popcorn-ie8.js"></script>
@@ -37,14 +38,12 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
-  var video = new Array();
+  var video = [],
+      controlsVisible = true,
+      myPlayer = $("#jquery_jplayer_1");
 
   video['webm'] = "http://videos-cdn.mozilla.net/serv/webmademovies/silverhacks/Leader2-Vimeo%20HD.webm";
   video['mp4'] = "http://videos-cdn.mozilla.net/serv/webmademovies/silverhacks/Leader2-Vimeo%20HD.mp4";
-
-  var controlsVisible = true;
-
-  var myPlayer = $("#jquery_jplayer_1");
 
   myPlayer.bind($.jPlayer.event.ready, function() {
     
@@ -53,7 +52,6 @@ $(document).ready(function(){
     }
 
     // check for touch on video to activate controls
-
     document.getElementsByClassName('player-hldr')[0].addEventListener('touchstart', function(e) {
       if (controlsVisible === false) {
         $('.jp-interface').fadeIn('fast',function() {
@@ -71,10 +69,7 @@ $(document).ready(function(){
         });
         e.preventDefault();
       }
-        
     }, false);
-
-
   });
 
   myPlayer.bind("jPlayerPopcornReady", function() {
@@ -82,8 +77,6 @@ $(document).ready(function(){
   });
 
   initPopcorn("#jquery_jplayer_1");
-
-
 
   function initGrabControl() {
 
@@ -148,7 +141,7 @@ $(document).ready(function(){
       myPlayer.jPlayer("playHead", p);
     }
 
-    _gaq.push(['_trackEvent', 'Amazonia', 'Progress bar', 'dragged']);
+    _gaq.push(['_trackEvent', 'Greencorps', 'Progress bar', 'dragged']);
   }
 
   var volumeBar = $('.jp-volume-bar');
@@ -163,12 +156,24 @@ $(document).ready(function(){
       myPlayer.jPlayer("volume", v); // Vol is a ratio, 0 to 1.
     }
 
-    _gaq.push(['_trackEvent', 'Amazonia', 'Volume bar', 'dragged']);
+    _gaq.push(['_trackEvent', 'Greencorps', 'Volume bar', 'dragged']);
   }
 
   var timeline = null;
 
-  function initPopcorn(id) {  
+  function initializeGoogleMap() {
+
+    var myOptions = {
+      zoom: 12,
+      center: new google.maps.LatLng(38.889563,-77.035789),
+      mapTypeId: google.maps.MapTypeId.SATELLITE
+    };
+
+    map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+
+  }
+
+  function initPopcorn(id) {
     $('.panel-num').text('loading...');
     var p = Popcorn.jplayer(id, video['mp4'], {
       size: {
@@ -191,23 +196,23 @@ $(document).ready(function(){
   }
 
 
-    function checkStartParam() {
-      if (getUrlVars()["s"] != null) {
-        var s = parseInt(getUrlVars()["s"])/10;
-        myPlayer.jPlayer("play",s);
-        clearInstructions();
-      }
+  function checkStartParam() {
+    if (getUrlVars()["s"] != null) {
+      var s = parseInt(getUrlVars()["s"])/10;
+      myPlayer.jPlayer("play",s);
+      clearInstructions();
     }
+  }
 
 
-    myPlayer.bind($.jPlayer.event.timeupdate, function(event) {
-      $('.jp-video-busy').hide();
-    });
+  myPlayer.bind($.jPlayer.event.timeupdate, function(event) {
+    $('.jp-video-busy').hide();
+  });
 
   myPlayer.bind($.jPlayer.event.pause, function(event) {
     $('.jp-video.play').show();
 
-    _gaq.push(['_trackEvent', 'Amazonia', 'Pause', 'Clicked']);
+    _gaq.push(['_trackEvent', 'Greencorps', 'Pause', 'Clicked']);
   });
 
 
@@ -219,46 +224,37 @@ $(document).ready(function(){
 
     $('.jp-video-busy').show();
 
-    _gaq.push(['_trackEvent', 'Amazonia', 'Play', 'jPlayer Play clicked']);
+    _gaq.push(['_trackEvent', 'Greencorps', 'Play', 'jPlayer Play clicked']);
   });
 
   $('.jp-progress').click(function() {
     $('.jp-video-busy').show();
     $('.fs-info:visible').hide();
 
-    _gaq.push(['_trackEvent', 'Amazonia', 'Play', 'jPlayer Progress bar clicked']);
+    _gaq.push(['_trackEvent', 'Greencorps', 'Play', 'jPlayer Progress bar clicked']);
   });
 
-  // 
+  myPlayer.bind($.jPlayer.event.ended, function() {
+    $('#jp_container_1').fadeOut('fast', function() {
+      console.log('faded out player');
+      $('#map_canvas').fadeIn('fast', function() {
+        $(this).css('height','100%');
+        initializeGoogleMap();
+      });
+    });
+  });
 
   function checkStartParam() {
     if (getUrlVars()["s"] != null) {    
 
       var s = parseInt(getUrlVars()["s"]);    
       myPlayer.jPlayer("play",s);    
-      _gaq.push(['_trackEvent', 'Amazonia', 'Start parameter', 'Triggered at '+s]);
+      _gaq.push(['_trackEvent', 'Greencorps', 'Start parameter', 'Triggered at '+s]);
     }
   }
 
-  function getUrlVars() {
-    var vars = [], hash;
-    var myWindow = window;
-
-    if (parent) {
-      myWindow = parent.window;
-    }
-        
-    var hashes = parentUrl.slice(parentUrl.indexOf('?') + 1).split('&');
-    for(var i = 0; i < hashes.length; i++)
-    {
-      hash = hashes[i].split('=');
-      vars.push(hash[0]);
-      vars[hash[0]] = hash[1];
-    }
-      return vars;
-    }  
-
 });
+
 
 
 $('.player-hldr').live('hover', function() {
@@ -305,8 +301,8 @@ if (top.location == self.location) {
 
 </head>
 <body>
+  <div id="map_canvas"></div>
   <div class="app-hldr">
-
     <div class="player-hldr">
       <div id="jp_container_1" class="jp-video jp-video-full">
         <div id="jquery_jplayer_1" class="jp-jplayer"></div>
