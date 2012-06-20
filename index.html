@@ -38,6 +38,39 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
+
+  var parkAudio = Popcorn( "#park-audio" )
+  .code({
+      start: 1,
+      end: 10,
+      onStart: function( options ) {
+        console.log('one');
+      },
+      onEnd: function ( options ) {
+        console.log('one away');
+      }
+    })
+  .code({
+      start: 11,
+      end: 22,
+      onStart: function( options ) {
+        console.log('two');
+      },
+      onEnd: function ( options ) {
+        console.log('two away');
+      }
+  })
+  .code({
+      start: 23,
+      end: 34,
+      onStart: function( options ) {
+        console.log('three');
+      },
+      onEnd: function ( options ) {
+        console.log('three away');
+      }    
+  });
+
   var video = [],
       controlsVisible = true,
       myPlayer = $("#jquery_jplayer_1");
@@ -240,6 +273,7 @@ $(document).ready(function(){
       $('#map_canvas').fadeIn('fast', function() {
         $(this).css('height','100%');
         initializeGoogleMap();
+        parkAudio.play();
       });
     });
   });
@@ -301,6 +335,7 @@ if (top.location == self.location) {
 
 </head>
 <body>
+  <audio id="park-audio" src="http://www.jplayer.org/audio/mp3/Miaow-07-Bubble.mp3" preload="auto"></audio>
   <div id="map_canvas"></div>
   <div class="app-hldr">
     <div class="player-hldr">
