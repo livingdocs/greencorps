@@ -344,19 +344,7 @@ $(document).ready(function(){
 
     _gaq.push(['_trackEvent', 'Greencorps', 'Play', 'jPlayer Progress bar clicked']);
   });
-    // the smooth zoom function
-  function smoothZoom (map, max, cnt) {
-      if (cnt >= max) {
-              return;
-          }
-      else {
-          z = google.maps.event.addListener(map, 'zoom_changed', function(event){
-              google.maps.event.removeListener(z);
-              smoothZoom(map, max, cnt + 1);
-          });
-          setTimeout(function(){map.setZoom(cnt)}, 50);
-      }
-  }
+
   function grabBarVol(xDrag) { // Handles seekBar dragging
     var jPlayerObj = myPlayer.data("jPlayer");
     if(volumeBar) {
