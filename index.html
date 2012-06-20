@@ -98,7 +98,7 @@ $(document).ready(function(){
   });
 
   
-  
+
   var parkAudio = Popcorn( "#park-audio" )
   .code({
       start: 1,
@@ -331,7 +331,7 @@ $(document).ready(function(){
   function initializeGoogleMap() {
 
     var myOptions = {
-      zoom: 7,
+      zoom: 13,
       center: new google.maps.LatLng(38.925156,-77.013424),
       mapTypeId: google.maps.MapTypeId.HYBRID
     };
@@ -345,9 +345,6 @@ $(document).ready(function(){
       console.log('faded out player');
       $('#map_canvas').fadeIn('fast', function() {
         initializeGoogleMap();
-        setTimeout(function () {
-           smoothZoom(map, 13, map.getZoom());
-        }, 1000);
         parkAudio.play();
       });
     });
