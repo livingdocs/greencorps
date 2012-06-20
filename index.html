@@ -37,218 +37,218 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
-	var video = new Array();
+  var video = new Array();
 
-	video['webm'] = "http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v";
-	//video['webm'] = "http://bc05.ajnm.me/665003303001/665003303001_1475632346001_WEB-FFA-INTERNET--1555-26.mp4";
-	video['mp4'] = "http://bc05.ajnm.me/665003303001/665003303001_1475632346001_WEB-FFA-INTERNET--1555-26.mp4";
+  video['webm'] = "http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v";
+  //video['webm'] = "http://bc05.ajnm.me/665003303001/665003303001_1475632346001_WEB-FFA-INTERNET--1555-26.mp4";
+  video['mp4'] = "http://bc05.ajnm.me/665003303001/665003303001_1475632346001_WEB-FFA-INTERNET--1555-26.mp4";
 
-	var controlsVisible = true;
+  var controlsVisible = true;
 
-	var myPlayer = $("#jquery_jplayer_1");
+  var myPlayer = $("#jquery_jplayer_1");
 
-	myPlayer.bind($.jPlayer.event.ready, function() {
-		
-		if(!($.browser.msie && $.browser.version < 9)) {
-  			initGrabControl();
-		}
+  myPlayer.bind($.jPlayer.event.ready, function() {
+    
+    if(!($.browser.msie && $.browser.version < 9)) {
+        initGrabControl();
+    }
 
-		// check for touch on video to activate controls
+    // check for touch on video to activate controls
 
-		document.getElementsByClassName('player-hldr')[0].addEventListener('touchstart', function(e) {
-			if (controlsVisible === false) {
-				$('.jp-interface').fadeIn('fast',function() {
-					controlsVisible = true;
-				});
-				e.preventDefault();
-			}
-    		
-		}, false);
+    document.getElementsByClassName('player-hldr')[0].addEventListener('touchstart', function(e) {
+      if (controlsVisible === false) {
+        $('.jp-interface').fadeIn('fast',function() {
+          controlsVisible = true;
+        });
+        e.preventDefault();
+      }
+        
+    }, false);
 
-		document.getElementsByClassName('player-hldr')[0].addEventListener('touchend', function(e) {
-			if (controlsVisible === true) {
-				$('.jp-interface').delay(1500).fadeOut('slow',function() {
-					controlsVisible = false;
-				});
-				e.preventDefault();
-			}
-    		
-		}, false);
-
-
- 	});
-
-	myPlayer.bind("jPlayerPopcornReady", function() {
-		checkStartParam();
- 	});
-
-	initPopcorn("#jquery_jplayer_1");
+    document.getElementsByClassName('player-hldr')[0].addEventListener('touchend', function(e) {
+      if (controlsVisible === true) {
+        $('.jp-interface').delay(1500).fadeOut('slow',function() {
+          controlsVisible = false;
+        });
+        e.preventDefault();
+      }
+        
+    }, false);
 
 
+  });
 
- 	function initGrabControl() {
+  myPlayer.bind("jPlayerPopcornReady", function() {
+    checkStartParam();
+  });
 
-		// jquery.grab event properties: event.position.x, event.position.y
-
-		var dragEventPeriod = 250,
-			dragEventOccurred = false,
-			dragEventLimiterId = null,
-			dragEventX = 0;
-
-		$('#jp-play-drag').grab({
-
-			onstart: function(){
-				dragEventOccurred = false;
-				clearInterval(dragEventLimiterId);
-				dragEventLimiterId = setInterval(function() {
-					if(dragEventOccurred) {
-						grabBar(dragEventX);
-						dragEventOccurred = false;
-					}
-				}, dragEventPeriod);
-			}, onmove: function(event){
-				dragEventX = event.position.x;
-				dragEventOccurred = true;
-			}, onfinish: function(event){
-				clearInterval(dragEventLimiterId);
-				dragEventOccurred = false;
-			}
-		});
-
-		$('#jp-play-volume').grab({
-
-			onstart: function(){
-				//console.log('mooo');
-				//console.log('jPlayerObj.css.jq.seekBar');
-				dragEventOccurred = false;
-				clearInterval(dragEventLimiterId);
-				dragEventLimiterId = setInterval(function() {
-					if(dragEventOccurred) {
-						grabBarVol(dragEventX);
-						dragEventOccurred = false;
-					}
-				}, dragEventPeriod);
-			}, onmove: function(event){
-				dragEventX = event.position.x;
-				dragEventOccurred = true;
-			}, onfinish: function(event){
-				clearInterval(dragEventLimiterId);
-				dragEventOccurred = false;
-			}
-		});
-	}
+  initPopcorn("#jquery_jplayer_1");
 
 
-	function grabBar(xDrag) { // Handles seekBar dragging
-		var jPlayerObj = myPlayer.data("jPlayer");
-		if(jPlayerObj.css.jq.seekBar) {
-			var offset = jPlayerObj.css.jq.seekBar.offset();
-			var x = xDrag - offset.left;
-			var w = jPlayerObj.css.jq.seekBar.width();
-			var p = 100*x/w;
-			myPlayer.jPlayer("playHead", p);
-		}
 
-		_gaq.push(['_trackEvent', 'Amazonia', 'Progress bar', 'dragged']);
-	}
+  function initGrabControl() {
 
-	var volumeBar = $('.jp-volume-bar');
+    // jquery.grab event properties: event.position.x, event.position.y
 
-	function grabBarVol(xDrag) { // Handles seekBar dragging
-		var jPlayerObj = myPlayer.data("jPlayer");
-		if(volumeBar) {
-			var offset = volumeBar.offset();
-			var x = xDrag - offset.left;
-			var w = volumeBar.width();
-			var v = x/w;
-			myPlayer.jPlayer("volume", v); // Vol is a ratio, 0 to 1.
-		}
+    var dragEventPeriod = 250,
+      dragEventOccurred = false,
+      dragEventLimiterId = null,
+      dragEventX = 0;
 
-		_gaq.push(['_trackEvent', 'Amazonia', 'Volume bar', 'dragged']);
-	}
+    $('#jp-play-drag').grab({
 
-	var timeline = null;
+      onstart: function(){
+        dragEventOccurred = false;
+        clearInterval(dragEventLimiterId);
+        dragEventLimiterId = setInterval(function() {
+          if(dragEventOccurred) {
+            grabBar(dragEventX);
+            dragEventOccurred = false;
+          }
+        }, dragEventPeriod);
+      }, onmove: function(event){
+        dragEventX = event.position.x;
+        dragEventOccurred = true;
+      }, onfinish: function(event){
+        clearInterval(dragEventLimiterId);
+        dragEventOccurred = false;
+      }
+    });
 
-	function initPopcorn(id) {  
-		$('.panel-num').text('loading...');
-		var p = Popcorn.jplayer(id, video['webm'], {
-			size: {
-      		width: "100%",
-      		height: "100%",
-      		cssClass: "jp-video-full"
-    	},
-    	autohide: {full: false},
-    	fullScreen : true
-   			
-		});  
+    $('#jp-play-volume').grab({
 
-	}
+      onstart: function(){
+        //console.log('mooo');
+        //console.log('jPlayerObj.css.jq.seekBar');
+        dragEventOccurred = false;
+        clearInterval(dragEventLimiterId);
+        dragEventLimiterId = setInterval(function() {
+          if(dragEventOccurred) {
+            grabBarVol(dragEventX);
+            dragEventOccurred = false;
+          }
+        }, dragEventPeriod);
+      }, onmove: function(event){
+        dragEventX = event.position.x;
+        dragEventOccurred = true;
+      }, onfinish: function(event){
+        clearInterval(dragEventLimiterId);
+        dragEventOccurred = false;
+      }
+    });
+  }
+
+
+  function grabBar(xDrag) { // Handles seekBar dragging
+    var jPlayerObj = myPlayer.data("jPlayer");
+    if(jPlayerObj.css.jq.seekBar) {
+      var offset = jPlayerObj.css.jq.seekBar.offset();
+      var x = xDrag - offset.left;
+      var w = jPlayerObj.css.jq.seekBar.width();
+      var p = 100*x/w;
+      myPlayer.jPlayer("playHead", p);
+    }
+
+    _gaq.push(['_trackEvent', 'Amazonia', 'Progress bar', 'dragged']);
+  }
+
+  var volumeBar = $('.jp-volume-bar');
+
+  function grabBarVol(xDrag) { // Handles seekBar dragging
+    var jPlayerObj = myPlayer.data("jPlayer");
+    if(volumeBar) {
+      var offset = volumeBar.offset();
+      var x = xDrag - offset.left;
+      var w = volumeBar.width();
+      var v = x/w;
+      myPlayer.jPlayer("volume", v); // Vol is a ratio, 0 to 1.
+    }
+
+    _gaq.push(['_trackEvent', 'Amazonia', 'Volume bar', 'dragged']);
+  }
+
+  var timeline = null;
+
+  function initPopcorn(id) {  
+    $('.panel-num').text('loading...');
+    var p = Popcorn.jplayer(id, video['webm'], {
+      size: {
+          width: "100%",
+          height: "100%",
+          cssClass: "jp-video-full"
+      },
+      autohide: {full: false},
+      fullScreen : true
+
+    });
+
+  }
 
 
     function checkStartParam() {
-      if (getUrlVars()["s"] != null) {    
-        var s = parseInt(getUrlVars()["s"])/10;    
+      if (getUrlVars()["s"] != null) {
+        var s = parseInt(getUrlVars()["s"])/10;
         myPlayer.jPlayer("play",s);
-        clearInstructions();    
+        clearInstructions();
       }
     }
 
 
-    myPlayer.bind($.jPlayer.event.timeupdate, function(event) {       
-    	$('.jp-video-busy').hide();
+    myPlayer.bind($.jPlayer.event.timeupdate, function(event) {
+      $('.jp-video-busy').hide();
     });
 
- 	myPlayer.bind($.jPlayer.event.pause, function(event) {  
- 		$('.jp-video.play').show();
+  myPlayer.bind($.jPlayer.event.pause, function(event) {
+    $('.jp-video.play').show();
 
- 		_gaq.push(['_trackEvent', 'Amazonia', 'Pause', 'Clicked']);
- 	});   
+    _gaq.push(['_trackEvent', 'Amazonia', 'Pause', 'Clicked']);
+  });
 
 
-	myPlayer.bind($.jPlayer.event.play, function() {
-		$('.jp-video-busy').show();
-	});
+  myPlayer.bind($.jPlayer.event.play, function() {
+    $('.jp-video-busy').show();
+  });
 
-	$('.jp-play').click(function() {
+  $('.jp-play').click(function() {
 
-		$('.jp-video-busy').show();
+    $('.jp-video-busy').show();
 
-		_gaq.push(['_trackEvent', 'Amazonia', 'Play', 'jPlayer Play clicked']);
-	});
+    _gaq.push(['_trackEvent', 'Amazonia', 'Play', 'jPlayer Play clicked']);
+  });
 
-	$('.jp-progress').click(function() {
-		$('.jp-video-busy').show();
-		$('.fs-info:visible').hide();
+  $('.jp-progress').click(function() {
+    $('.jp-video-busy').show();
+    $('.fs-info:visible').hide();
 
-		_gaq.push(['_trackEvent', 'Amazonia', 'Play', 'jPlayer Progress bar clicked']);
-	});
+    _gaq.push(['_trackEvent', 'Amazonia', 'Play', 'jPlayer Progress bar clicked']);
+  });
 
-	// 
+  // 
 
-	function checkStartParam() {
-		if (getUrlVars()["s"] != null) {    
+  function checkStartParam() {
+    if (getUrlVars()["s"] != null) {    
 
-			var s = parseInt(getUrlVars()["s"]);    
-			myPlayer.jPlayer("play",s);    
-			_gaq.push(['_trackEvent', 'Amazonia', 'Start parameter', 'Triggered at '+s]);
-		}
-	}
+      var s = parseInt(getUrlVars()["s"]);    
+      myPlayer.jPlayer("play",s);    
+      _gaq.push(['_trackEvent', 'Amazonia', 'Start parameter', 'Triggered at '+s]);
+    }
+  }
 
-	function getUrlVars() {
-		var vars = [], hash;
-		var myWindow = window;
+  function getUrlVars() {
+    var vars = [], hash;
+    var myWindow = window;
 
-		if (parent) {
-			myWindow = parent.window;
-		}
+    if (parent) {
+      myWindow = parent.window;
+    }
         
-		var hashes = parentUrl.slice(parentUrl.indexOf('?') + 1).split('&');
-		for(var i = 0; i < hashes.length; i++)
-		{
-			hash = hashes[i].split('=');
-			vars.push(hash[0]);
-			vars[hash[0]] = hash[1];
-		}
+    var hashes = parentUrl.slice(parentUrl.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
       return vars;
     }  
 
@@ -256,20 +256,20 @@ $(document).ready(function(){
 
 
 $('.player-hldr').live('hover', function() {
-  	$('.jp-interface').fadeIn('fast');
+    $('.jp-interface').fadeIn('fast');
 });
 
 $('.player-hldr').live('mouseleave', function() {
-	$('.jp-interface').not(':hidden').fadeOut('slow');
+  $('.jp-interface').not(':hidden').fadeOut('slow');
 });
 
 
 var addToHomeConfig = {
-	autostart: false
+  autostart: false
 };
 
 if (top.location == self.location) {
-	setTimeout(function () {
+  setTimeout(function () {
      addToHome.show();
   }, 1000);
 }
@@ -298,100 +298,100 @@ if (top.location == self.location) {
 
 </head>
 <body>
-	<div class="app-hldr">
-		<div class="player-hldr">
-			<div id="jp_container_1" class="jp-video jp-video-full">
-				<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+  <div class="app-hldr">
+    <div class="player-hldr">
+      <div id="jp_container_1" class="jp-video jp-video-full">
+        <div id="jquery_jplayer_1" class="jp-jplayer"></div>
 
-					<!--main containers for our controls-->
-		    		<div class="jp-gui">
-		    			<div class="jp-video-play">
-		    				<span class="jp-video-play-icon"><img src="video-play.png"/></span>
-		    			</div>
+          <!--main containers for our controls-->
+            <div class="jp-gui">
+              <div class="jp-video-play">
+                <span class="jp-video-play-icon"><img src="video-play.png"/></span>
+              </div>
 
-		    			<div class="jp-video-busy" style="display:none">
-		    				<span class="jp-video-busy-icon"><img src="ajax-loader.gif"/></span>
-		    			</div>
+              <div class="jp-video-busy" style="display:none">
+                <span class="jp-video-busy-icon"><img src="ajax-loader.gif"/></span>
+              </div>
 
-		    			<div class="fs-quality-ctrl" style="display:none">
-		    				<p>Quality</p>
-		    				<ul>
-		    					<li class="quality-switch" q="lo"><a href="#">low</a></li>
-		    					<li class="quality-switch" q="me"><a href="#">medium</a></li>
-		    					<li class="quality-switch" q="hi"><a href="#">high</a></li>
-		    					<li class="quality-switch" q="lo"><a href="#">HD</a></li>
-							</ul>
-		    			</div>
+              <div class="fs-quality-ctrl" style="display:none">
+                <p>Quality</p>
+                <ul>
+                  <li class="quality-switch" q="lo"><a href="#">low</a></li>
+                  <li class="quality-switch" q="me"><a href="#">medium</a></li>
+                  <li class="quality-switch" q="hi"><a href="#">high</a></li>
+                  <li class="quality-switch" q="lo"><a href="#">HD</a></li>
+              </ul>
+              </div>
 
-		    			<div class="jp-quality-ctrl" style="display:none">
-		    				<ul>
-		    					<li><a class="quality-switch" q="lo" href="#">low</a></li>
-		    					<li><a class="quality-switch" q="me" href="#">med</a></li>
-		    					<li><a class="quality-switch" q="hi" href="#">high</a></li>
-		    					<li><a class="quality-switch" q="hd" href="#">HD</a></li>
-							</ul>
-		    			</div>
+              <div class="jp-quality-ctrl" style="display:none">
+                <ul>
+                  <li><a class="quality-switch" q="lo" href="#">low</a></li>
+                  <li><a class="quality-switch" q="me" href="#">med</a></li>
+                  <li><a class="quality-switch" q="hi" href="#">high</a></li>
+                  <li><a class="quality-switch" q="hd" href="#">HD</a></li>
+              </ul>
+              </div>
 
-		    			<div id ="fstimeline" class="fullscreen-info" style="display:none">
-		    			</div>
+              <div id ="fstimeline" class="fullscreen-info" style="display:none">
+              </div>
 
 
-		    			<!--<div class="jp-screen-loader"></div>-->
-		        		<div class="jp-interface">
-		            	<div class="jp-controls-holder">
-								<!--play and pause buttons-->
-								<a href="#" class="jp-play" tabindex="1">play</a>
-								<a href="#" class="jp-pause" tabindex="1">pause</a>
-								<span class="separator sep-1"></span>
-								 
-								<!--progress bar-->
-								<div class="jp-progress">
-									<div class="jp-seek-bar">
-								    	<div class="jp-play-bar"><span id="jp-play-drag"></span></div>
-									</div>
-								</div>
-								 
-								<!--time notifications-->
-								<div class="jp-current-time"></div>
-								<span class="time-sep">/</span>
-								<div class="jp-duration"></div>
-								<span class="separator sep-2"></span>
-								 
-								<!--mute / unmute toggle-->
-								<a href="javascript:;" class="jp-mute" tabindex="2" title="mute">mute</a>
-								<a href="javascript:;" class="jp-unmute" tabindex="2" title="unmute">unmute</a>
-								 
-								<!--volume bar-->
-								<div class="jp-volume-bar">
-									<div class="jp-volume-bar-value"><span id="jp-play-volume" class="handle"></span></div>
-								</div>
-								<span class="separator sep-2"></span>
-								 
-								<!--full screen toggle-->
-								<!--<a href="#" class="jp-full-screen" tabindex="3" title="full screen">full screen</a>
-								<a href="#" class="jp-restore-screen" tabindex="3" title="restore screen">restore screen</a>
+              <!--<div class="jp-screen-loader"></div>-->
+                <div class="jp-interface">
+                  <div class="jp-controls-holder">
+                <!--play and pause buttons-->
+                <a href="#" class="jp-play" tabindex="1">play</a>
+                <a href="#" class="jp-pause" tabindex="1">pause</a>
+                <span class="separator sep-1"></span>
+                 
+                <!--progress bar-->
+                <div class="jp-progress">
+                  <div class="jp-seek-bar">
+                      <div class="jp-play-bar"><span id="jp-play-drag"></span></div>
+                  </div>
+                </div>
+                 
+                <!--time notifications-->
+                <div class="jp-current-time"></div>
+                <span class="time-sep">/</span>
+                <div class="jp-duration"></div>
+                <span class="separator sep-2"></span>
+                 
+                <!--mute / unmute toggle-->
+                <a href="javascript:;" class="jp-mute" tabindex="2" title="mute">mute</a>
+                <a href="javascript:;" class="jp-unmute" tabindex="2" title="unmute">unmute</a>
+                 
+                <!--volume bar-->
+                <div class="jp-volume-bar">
+                  <div class="jp-volume-bar-value"><span id="jp-play-volume" class="handle"></span></div>
+                </div>
+                <span class="separator sep-2"></span>
+                 
+                <!--full screen toggle-->
+                <!--<a href="#" class="jp-full-screen" tabindex="3" title="full screen">full screen</a>
+                <a href="#" class="jp-restore-screen" tabindex="3" title="restore screen">restore screen</a>
 
-								<div class="jp-quality">
-									<a class="quality-btn" q="lo" href="#">low</a>
-									<a class="quality-btn" q="me" href="#" style="display:none">med</a>
-									<a class="quality-btn" q="hi" href="#" style="display:none">high</a>
-									<a class="quality-btn" q="hd" href="#" style="display:none">HD</a>
-								</div>-->
+                <div class="jp-quality">
+                  <a class="quality-btn" q="lo" href="#">low</a>
+                  <a class="quality-btn" q="me" href="#" style="display:none">med</a>
+                  <a class="quality-btn" q="hi" href="#" style="display:none">high</a>
+                  <a class="quality-btn" q="hd" href="#" style="display:none">HD</a>
+                </div>-->
 
-		            	</div><!--end jp-controls-holder-->
-		        		</div><!--end jp-interface-->
-		    		</div><!--end jp-gui-->
+                  </div><!--end jp-controls-holder-->
+                </div><!--end jp-interface-->
+            </div><!--end jp-gui-->
 
-					<!--unsupported message-->
-					<div class="jp-no-solution">
-				   	<span>Update Required</span>
-				   	The version of Flash you are using is not supported.
-					</div>
-			
-				</div><!--end jp_container_1-->
-			</div>
-		</div> <!-- end .player-hldr -->
-	</div> <!-- end .app-hldr -->
+          <!--unsupported message-->
+          <div class="jp-no-solution">
+            <span>Update Required</span>
+            The version of Flash you are using is not supported.
+          </div>
+      
+        </div><!--end jp_container_1-->
+      </div>
+    </div> <!-- end .player-hldr -->
+  </div> <!-- end .app-hldr -->
 </body>
 
 </html>
