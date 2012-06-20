@@ -33,6 +33,7 @@
 <script type="text/javascript" src="js/jquery.grab.js"></script>
 <script type="text/javascript" src="js/popcorn.player.js"></script>
 <script type="text/javascript" src="js/popcorn.jplayer.js"></script>
+<script type="text/javascript" src="js/popcorn.code.js"></script>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -178,9 +179,16 @@ $(document).ready(function(){
       },
       autohide: {full: false},
       fullScreen : true
-
+    }).code({
+      start: 6,
+      end: 8,
+      onStart: function( options ) {
+        console.log('awesome 6');
+      },
+      onEnd: function ( options ) {
+        console.log('awesome 8');
+      }
     });
-
   }
 
 
@@ -267,12 +275,13 @@ var addToHomeConfig = {
   autostart: false
 };
 
+/*
 if (top.location == self.location) {
   setTimeout(function () {
      addToHome.show();
   }, 1000);
 }
-
+*/
 
 </script>
 <script type="application/javascript" src="js/add2home.js"></script>
