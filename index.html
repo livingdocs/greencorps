@@ -39,8 +39,46 @@
 //<![CDATA[
 $(document).ready(function(){
 
+  var meridianHill = [
+    new google.maps.LatLng(38.923127,-77.036394),
+    new google.maps.LatLng(38.919188,-77.036405),
+    new google.maps.LatLng(38.919238,-77.034817),
+    new google.maps.LatLng(38.920615,-77.034935),
+    new google.maps.LatLng(38.920882,-77.035225),
+    new google.maps.LatLng(38.923186,-77.035407)
+  ]
+
   var marvinGaye = [
-    38.839902,-76.981177
+    new google.maps.LatLng(38.902515,-76.950327),
+    new google.maps.LatLng(38.900316,-76.954444),
+    new google.maps.LatLng(38.903914,-76.960246),
+    new google.maps.LatLng(38.906223,-76.947725),
+    new google.maps.LatLng(38.901895,-76.942335),
+    new google.maps.LatLng(38.899013,-76.9392),
+    new google.maps.LatLng(38.898673,-76.930617),
+    new google.maps.LatLng(38.898589,-76.929275),
+    new google.maps.LatLng(38.898406,-76.925622),
+    new google.maps.LatLng(38.895787,-76.921875),
+    new google.maps.LatLng(38.894541,-76.917755),
+    new google.maps.LatLng(38.891936,-76.913614),
+    new google.maps.LatLng(38.891886,-76.910663),
+    new google.maps.LatLng(38.889806,-76.914762),
+    new google.maps.LatLng(38.892913,-76.917809),
+    new google.maps.LatLng(38.894641,-76.921918),
+    new google.maps.LatLng(38.895025,-76.924761),
+    new google.maps.LatLng(38.895334,-76.926778),
+    new google.maps.LatLng(38.89652,-76.926435),
+    new google.maps.LatLng(38.897004,-76.929889),
+    new google.maps.LatLng(38.896779,-76.937732),
+    new google.maps.LatLng(38.898407,-76.93917),
+    new google.maps.LatLng(38.899109,-76.942592),
+    new google.maps.LatLng(38.892971,-76.942624),
+    new google.maps.LatLng(38.895209,-76.94918),
+    new google.maps.LatLng(38.898357,-76.946551),
+    new google.maps.LatLng(38.898482,-76.94315),
+    new google.maps.LatLng(38.90052,-76.943075),
+    new google.maps.LatLng(38.902064,-76.945746), 
+    new google.maps.LatLng(38.902515,-76.950327) 
   ]
 
   var oxonRun = [
@@ -88,6 +126,24 @@ $(document).ready(function(){
     new google.maps.LatLng(38.813499,-77.019704)
   ]
 
+  meridianHillPoly = new google.maps.Polygon({
+    paths: meridianHill,
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 3,
+    fillColor: "#FF0000",
+    fillOpacity: 0.35
+  });
+
+  marvinGayePoly = new google.maps.Polygon({
+    paths: marvinGaye,
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 3,
+    fillColor: "#FF0000",
+    fillOpacity: 0.35
+  });
+
   oxonRunPoly = new google.maps.Polygon({
     paths: oxonRun,
     strokeColor: "#FF0000",
@@ -101,34 +157,22 @@ $(document).ready(function(){
 
   var parkAudio = Popcorn( "#park-audio" )
   .code({
-      start: 1,
-      end: 10,
+      start: 5,
       onStart: function( options ) {
-        console.log('one');
-      },
-      onEnd: function ( options ) {
-        console.log('one away');
+        oxonRunPoly.setMap(map);
       }
     })
   .code({
-      start: 11,
-      end: 22,
+      start: 22,
       onStart: function( options ) {
-        oxonRunPoly.setMap(map);
-      },
-      onEnd: function ( options ) {
-        console.log('two away');
+        meridianHillPoly.setMap(map);
       }
   })
   .code({
-      start: 23,
-      end: 34,
+      start: 46,
       onStart: function( options ) {
-        console.log('three');
-      },
-      onEnd: function ( options ) {
-        console.log('three away');
-      }    
+        marvinGayePoly.setMap(map);
+      } 
   });
 
   var video = [],
@@ -331,7 +375,7 @@ $(document).ready(function(){
   function initializeGoogleMap() {
 
     var myOptions = {
-      zoom: 13,
+      zoom: 12,
       center: new google.maps.LatLng(38.925156,-77.013424),
       mapTypeId: google.maps.MapTypeId.HYBRID
     };
@@ -409,7 +453,10 @@ if (top.location == self.location) {
 
 </head>
 <body>
-  <audio id="park-audio" src="http://www.jplayer.org/audio/mp3/Miaow-07-Bubble.mp3" preload="auto"></audio>
+  <audio id="park-audio" preload="auto"> 
+    <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.mp3" >
+    <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.ogg" >
+  </audio>
   <div id="map_canvas"></div>
   <div class="app-hldr">
     <div class="player-hldr">
