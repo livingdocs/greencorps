@@ -39,6 +39,66 @@
 //<![CDATA[
 $(document).ready(function(){
 
+  var marvinGaye = [
+    38.839902,-76.981177
+  ]
+
+  var oxonRun = [
+    new google.maps.LatLng(38.813279,-77.019769),
+    new google.maps.LatLng(38.810135,-77.015027),
+    new google.maps.LatLng(38.814964,-77.010133),
+    new google.maps.LatLng(38.819137,-77.008815),
+    new google.maps.LatLng(38.820358,-77.005134),
+    new google.maps.LatLng(38.824412,-77.00552),
+    new google.maps.LatLng(38.825716,-77.005274),
+    new google.maps.LatLng(38.82921,-77.005692),
+    new google.maps.LatLng(38.829327,-77.005349),
+    new google.maps.LatLng(38.83389,-77.002677),
+    new google.maps.LatLng(38.837434,-76.995042),
+    new google.maps.LatLng(38.838659,-76.993119),
+    new google.maps.LatLng(38.839769,-76.988389),
+    new google.maps.LatLng(38.843649,-76.972749),
+    new google.maps.LatLng(38.844563,-76.970248),
+    new google.maps.LatLng(38.846854,-76.966078),
+    new google.maps.LatLng(38.850531,-76.96052),
+    new google.maps.LatLng(38.85079,-76.958439),
+    new google.maps.LatLng(38.849837,-76.95831),
+    new google.maps.LatLng(38.848876,-76.959705),
+    new google.maps.LatLng(38.845208,-76.964061),
+    new google.maps.LatLng(38.843328,-76.968159),
+    new google.maps.LatLng(38.842509,-76.969575),
+    new google.maps.LatLng(38.841197,-76.970369),
+    new google.maps.LatLng(38.840236,-76.973717),
+    new google.maps.LatLng(38.836204,-76.981855),
+    new google.maps.LatLng(38.837608,-76.983558),
+    new google.maps.LatLng(38.837608,-76.985361),
+    new google.maps.LatLng(38.83668,-76.986981),
+    new google.maps.LatLng(38.83795,-76.988225),
+    new google.maps.LatLng(38.836839,-76.993118),
+    new google.maps.LatLng(38.83592,-76.995832),
+    new google.maps.LatLng(38.833204,-77.000327),
+    new google.maps.LatLng(38.831081,-77.003535),
+    new google.maps.LatLng(38.825414,-77.003439),
+    new google.maps.LatLng(38.823976,-77.004361),
+    new google.maps.LatLng(38.820715,-77.00234),
+    new google.maps.LatLng(38.811375,-77.006817),
+    new google.maps.LatLng(38.805418,-77.000611),
+    new google.maps.LatLng(38.79693,-77.012649),
+    new google.maps.LatLng(38.805859,-77.022219),
+    new google.maps.LatLng(38.813499,-77.019704)
+  ]
+
+  oxonRunPoly = new google.maps.Polygon({
+    paths: oxonRun,
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 3,
+    fillColor: "#FF0000",
+    fillOpacity: 0.35
+  });
+
+  
+  
   var parkAudio = Popcorn( "#park-audio" )
   .code({
       start: 1,
@@ -54,7 +114,7 @@ $(document).ready(function(){
       start: 11,
       end: 22,
       onStart: function( options ) {
-        console.log('two');
+        oxonRunPoly.setMap(map);
       },
       onEnd: function ( options ) {
         console.log('two away');
@@ -73,7 +133,8 @@ $(document).ready(function(){
 
   var video = [],
       controlsVisible = true,
-      myPlayer = $("#jquery_jplayer_1");
+      myPlayer = $("#jquery_jplayer_1"),
+      map;
 
   video['webm'] = "http://videos-cdn.mozilla.net/serv/webmademovies/silverhacks/Leader2-Vimeo%20HD.webm";
   video['mp4'] = "http://videos-cdn.mozilla.net/serv/webmademovies/silverhacks/Leader2-Vimeo%20HD.mp4";
@@ -179,33 +240,6 @@ $(document).ready(function(){
 
   var volumeBar = $('.jp-volume-bar');
 
-  function grabBarVol(xDrag) { // Handles seekBar dragging
-    var jPlayerObj = myPlayer.data("jPlayer");
-    if(volumeBar) {
-      var offset = volumeBar.offset();
-      var x = xDrag - offset.left;
-      var w = volumeBar.width();
-      var v = x/w;
-      myPlayer.jPlayer("volume", v); // Vol is a ratio, 0 to 1.
-    }
-
-    _gaq.push(['_trackEvent', 'Greencorps', 'Volume bar', 'dragged']);
-  }
-
-  var timeline = null;
-
-  function initializeGoogleMap() {
-
-    var myOptions = {
-      zoom: 12,
-      center: new google.maps.LatLng(38.889563,-77.035789),
-      mapTypeId: google.maps.MapTypeId.SATELLITE
-    };
-
-    map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
-
-  }
-
   function initPopcorn(id) {
     $('.panel-num').text('loading...');
     var p = Popcorn.jplayer(id, video['mp4'], {
@@ -266,17 +300,60 @@ $(document).ready(function(){
 
     _gaq.push(['_trackEvent', 'Greencorps', 'Play', 'jPlayer Progress bar clicked']);
   });
+    // the smooth zoom function
+  function smoothZoom (map, max, cnt) {
+      if (cnt >= max) {
+              return;
+          }
+      else {
+          z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+              google.maps.event.removeListener(z);
+              smoothZoom(map, max, cnt + 1);
+          });
+          setTimeout(function(){map.setZoom(cnt)}, 50);
+      }
+  }
+  function grabBarVol(xDrag) { // Handles seekBar dragging
+    var jPlayerObj = myPlayer.data("jPlayer");
+    if(volumeBar) {
+      var offset = volumeBar.offset();
+      var x = xDrag - offset.left;
+      var w = volumeBar.width();
+      var v = x/w;
+      myPlayer.jPlayer("volume", v); // Vol is a ratio, 0 to 1.
+    }
+
+    _gaq.push(['_trackEvent', 'Greencorps', 'Volume bar', 'dragged']);
+  }
+
+  var timeline = null;
+
+  function initializeGoogleMap() {
+
+    var myOptions = {
+      zoom: 7,
+      center: new google.maps.LatLng(38.925156,-77.013424),
+      mapTypeId: google.maps.MapTypeId.HYBRID
+    };
+
+    map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+
+  }
 
   myPlayer.bind($.jPlayer.event.ended, function() {
     $('#jp_container_1').fadeOut('fast', function() {
       console.log('faded out player');
       $('#map_canvas').fadeIn('fast', function() {
-        $(this).css('height','100%');
         initializeGoogleMap();
+        setTimeout(function () {
+           smoothZoom(map, 13, map.getZoom());
+        }, 1000);
         parkAudio.play();
       });
     });
   });
+
+
 
   function checkStartParam() {
     if (getUrlVars()["s"] != null) {    
