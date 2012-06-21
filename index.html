@@ -126,7 +126,7 @@ $(document).ready(function(){
     fillOpacity: 0.35
   });
 
-  
+  var initialPlayerBool = false;
 
   var parkAudio = Popcorn( "#park-audio" )
   .code({
@@ -194,7 +194,6 @@ $(document).ready(function(){
           map.setStreetView(panorama);
 
           // setTimeout
-
           setTimeout(function(){
             /*myPlayer( "setMedia", {
               m4a: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4"
@@ -203,8 +202,8 @@ $(document).ready(function(){
             $('#jp_video_0').attr('src','http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4');
 
             $('#pano').fadeOut('slow');
-            $('#map_canvas').fadeOut('slow', function() {
-              $('#jp_container_1').fadeIn('slow', function() {
+            $('#map_canvas').fadeOut('fast', function() {
+              $('#jp_container_1').fadeIn('fast', function() {
                 p.play();
               });
             });
@@ -325,8 +324,45 @@ $(document).ready(function(){
 
   var p;
 
+  function dropPins(){
+    var pins = [
+      {
+        lat:"38.922455",
+        lng:"-77.035267",
+        name: "Robin",
+        park: "Meridian Hill/Malcolm X Park"
+      }
+    ]
+  }
+
   p.listen('ended', function(){
     console.log('boom ended');
+    if(initialPlayerBool === true){
+        var isaiah = new google.maps.LatLng(38.897478,-76.925906);
+        var panoramaOptions = {
+          position: isaiah,
+          pov: {
+            heading: 90,
+            pitch: 5,
+            zoom: 1
+          }
+        };
+        $('#pano').fadeIn('fast', function() {
+          $('#closeStreetView').css('display', 'block');
+          console.log('pano opend');
+          var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+          map.setStreetView(panorama);
+          $('#closeStreetView').click(function(){
+            $(this).css('display', 'none');
+            panorama.setVisible(false);
+            $('#pano').css('display', 'none');
+            setTimeout(function(){
+              map.setZoom(12);
+              map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
+            }, 1000);
+          });
+        });
+    }
   });
 
   function initPopcorn(id) {
@@ -350,7 +386,6 @@ $(document).ready(function(){
       clearInstructions();
     }
   }
-
 
   myPlayer.bind($.jPlayer.event.timeupdate, function(event) {
     $('.jp-video-busy').hide();
@@ -412,8 +447,12 @@ $(document).ready(function(){
     $('#jp_container_1').fadeOut('fast', function() {
       console.log('faded out player');
       $('#map_canvas').fadeIn('fast', function() {
-        initializeGoogleMap();
-        parkAudio.play();
+        if(!initialPlayerBool){
+          console.log('reset map')
+          initialPlayerBool = true;
+          initializeGoogleMap();
+          parkAudio.play();
+        }
       });
     });
   });
@@ -477,8 +516,9 @@ if (top.location == self.location) {
 
 </head>
 <body>
+  <div id="closeStreetView" style="z-index:9999; background-color:black; display:none; position:absolute; top:5px; right:0; width:200px; height:20px;">close street view</div>
   <div style="position:absolute; z-index:4; height:20px; width:200px;">
-    <audio id="park-audio" preload="auto"> 
+    <audio id="park-audio" preload="auto" controls> 
       <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.mp3" >
       <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.ogg" >
     </audio>
