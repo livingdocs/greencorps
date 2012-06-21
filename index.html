@@ -126,7 +126,10 @@ $(document).ready(function(){
     fillOpacity: 0.35
   });
 
-  var initialPlayerBool = false;
+  var initialPlayerBool = false,
+      globalVideoSource,
+      pinsAreDropped = false,
+      globalPov = 90;
 
   var parkAudio = Popcorn( "#park-audio" )
   .code({
@@ -164,7 +167,8 @@ $(document).ready(function(){
         var marker = new google.maps.Marker({
             position: myLatlng, 
             map: map,
-            title:"Isaiah"
+            title:"Isaiah",
+            animation: google.maps.Animation.DROP
         }); 
       }
   })
@@ -324,25 +328,162 @@ $(document).ready(function(){
 
   var p;
 
+  function initNewVideo(o){
+    console.log('initNewVideo(%o)', o);
+    globalPov = (o.pov) ? o.pov : 90;
+    globalVideoSource = new google.maps.LatLng(o.lat,o.lng);
+    var panoramaOptions = {
+      position: globalVideoSource,
+      pov: {
+        heading: (o.pov) ? o.pov : 90,
+        pitch: 5,
+        zoom: 1
+      }
+    };
+    $('#pano').fadeIn('slow', function() {
+      console.log('pano opened');
+      var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+      map.setStreetView(panorama);
+      // setTimeout
+      setTimeout(function(){
+        $('#jp_video_0').attr('src',o.mp4);
+
+        $('#pano').fadeOut('slow');
+        $('#map_canvas').fadeOut('fast', function() {
+          $('#jp_container_1').fadeIn('fast', function() {
+            p.play();
+          });
+        });
+      },4000);
+    });
+  }
+
+  function dropPin (o){
+    var pos = new google.maps.LatLng(o.lat,o.lng);
+    var marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        draggable: false,
+        animation: google.maps.Animation.DROP
+    });
+    google.maps.event.addListener(marker, 'click', function() {
+      initNewVideo(o);
+    });
+  }
+
   function dropPins(){
+    pinsAreDropped = true;
     var pins = [
       {
-        lat:"38.922455",
-        lng:"-77.035267",
+        lat:38.922432,
+        lng:-77.035269,
         name: "Robin",
-        park: "Meridian Hill/Malcolm X Park"
+        park: "Meridian Hill/Malcolm X Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Robin3-Vimeo%20HD.mp4",
+        pov:90
+      },
+      {
+        lat:38.922105,
+        lng:-77.0352,
+        name: "Buddy",
+        park: "Meridian Hill/Malcolm X Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Buddy1-Vimeo%20HD.mp4",
+        pov: 270
+      },
+      {
+        lat:38.897317,
+        lng:-76.926046,
+        name: "Philip",
+        park: "Marvin Gaye Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Phillip-Vimeo%20HD.mp4",
+        pov: 150
+      },
+      {
+        lat:38.898413,
+        lng:-76.937594,
+        name: "Carlos",
+        park: "Marvin Gaye Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Carlos_Creek-Vimeo%20HD.mp4",
+        pov: 280
+      },
+      {
+        lat:38.897102,
+        lng:-76.926015,
+        name: "James",
+        park: "Marvin Gaye Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/James_Stabbing2-Vimeo%20HD.mp4",
+        pov: 80
+      },
+      {
+        lat:38.897478,
+        lng:-76.925906,
+        name: "Isaiah",
+        park: "Marvin Gaye Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4",
+        pov:90
+      },
+      {
+        lat:38.896924,
+        lng:-76.92607,
+        name: "Charles",
+        park: "Marvin Gaye Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Charles_Poem-Vimeo%20HD.mp4",
+        pov: 100
+      },
+      {
+        lat:38.895858,
+        lng:-76.92573,
+        name: "Brandon",
+        park: "Marvin Gaye Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Brandon-Vimeo%20HD.mp4",
+        pov: 10
+      },
+      {
+        lat:38.897101,
+        lng:-76.926031,
+        name: "Kenny",
+        park: "Marvin Gaye Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Kenny-Vimeo%20HD.mp4",
+        pov: 120
+      },
+      {
+        lat:38.837396,
+        lng:-76.99079,
+        name: "James",
+        park: "Marvin Gaye Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/James_OxonRun2-Vimeo%20HD.mp4",
+        pov: 340
+      },
+      {
+        lat:38.83549,
+        lng:-76.996796,
+        name: "Michael",
+        park: "Marvin Gaye Park",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Michael_Tree2-Vimeo%20HD.mp4",
+        pov: 310
+      },
+      {
+        lat:38.835704,
+        lng:-76.99635,
+        name: "Henry",
+        mp4: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Charles_Tree-Vimeo%20HD.mp4",
+        pov: 330
       }
-    ]
+    ];
+    console.log('dropping pins')
+    $(pins).each(function(i,o) {
+      console.log(o);
+        dropPin(o);
+    });
   }
 
   p.listen('ended', function(){
     console.log('boom ended');
     if(initialPlayerBool === true){
-        var isaiah = new google.maps.LatLng(38.897478,-76.925906);
         var panoramaOptions = {
-          position: isaiah,
+          position: globalVideoSource,
           pov: {
-            heading: 90,
+            heading: globalPov,
             pitch: 5,
             zoom: 1
           }
@@ -357,8 +498,11 @@ $(document).ready(function(){
             panorama.setVisible(false);
             $('#pano').css('display', 'none');
             setTimeout(function(){
-              map.setZoom(12);
-              map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
+              if(!pinsAreDropped){
+                map.setZoom(12);
+                map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
+                dropPins();
+              } 
             }, 1000);
           });
         });
@@ -449,6 +593,7 @@ $(document).ready(function(){
       $('#map_canvas').fadeIn('fast', function() {
         if(!initialPlayerBool){
           console.log('reset map')
+          globalVideoSource = new google.maps.LatLng(38.897478,-76.925906);
           initialPlayerBool = true;
           initializeGoogleMap();
           parkAudio.play();
@@ -516,9 +661,9 @@ if (top.location == self.location) {
 
 </head>
 <body>
-  <div id="closeStreetView" style="z-index:9999; background-color:black; display:none; position:absolute; top:5px; right:0; width:200px; height:20px;">close street view</div>
+  <div id="closeStreetView" style="z-index:9999; background-color:#333; font-size:16px; color:white; display:none; padding:15px; position:absolute; top:10px; right:10px; cursor:pointer;">Watch other trainees</div>
   <div style="position:absolute; z-index:4; height:20px; width:200px;">
-    <audio id="park-audio" preload="auto" controls> 
+    <audio id="park-audio" preload="auto"> 
       <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.mp3" >
       <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.ogg" >
     </audio>
