@@ -39,16 +39,22 @@
 //<![CDATA[
 $(document).ready(function(){
 
-  var meridianHill = [
-    new google.maps.LatLng(38.923127,-77.036394),
-    new google.maps.LatLng(38.919188,-77.036405),
-    new google.maps.LatLng(38.919238,-77.034817),
-    new google.maps.LatLng(38.920615,-77.034935),
-    new google.maps.LatLng(38.920882,-77.035225),
-    new google.maps.LatLng(38.923186,-77.035407)
-  ]
+  var meridianHillData = [38.923127,-77.036394,38.919188,-77.036405,38.919238,-77.034817,38.920615,-77.034935,38.920882,-77.035225,38.923186,-77.035407];
+  
+  var marvinGayeData = [38.902515,-76.950327,38.900316,-76.954444,38.903914,-76.960246,38.906223,-76.947725,38.901895,-76.942335,38.899013,-76.9392,38.898673,-76.930617,38.898589,-76.929275,38.898406,-76.925622,38.895787,-76.921875,38.898406,-76.925622,38.895787,-76.921875,38.894541,-76.917755,38.891936,-76.913614,38.891886,-76.910663,38.889806,-76.914762,38.892913,-76.917809,38.894641,-76.921918,38.895025,-76.924761,38.895334,-76.926778,38.89652,-76.926435,38.897004,-76.929889,38.896779,-76.937732,38.898407,-76.93917,38.899109,-76.942592,38.892971,-76.942624,38.895209,-76.94918,38.898357,-76.946551,38.898482,-76.94315,38.90052,-76.943075,38.902064,-76.945746,38.902515,-76.950327];
 
-  var marvinGaye = [
+  var meridianHill = [];
+  var marvinGaye = [];
+
+  for (i=0; i < meridianHillData.length; i += 2) {
+    meridianHill.push(new google.maps.LatLng(meridianHillData[i],meridianHillData[i+1]));
+  }
+
+  for (i=0; i < marvinGayeData.length; i += 2) {
+    marvinGaye.push(new google.maps.LatLng(marvinGayeData[i],marvinGayeData[i+1]));
+  }
+
+  /*var marvinGaye = [
     new google.maps.LatLng(38.902515,-76.950327),
     new google.maps.LatLng(38.900316,-76.954444),
     new google.maps.LatLng(38.903914,-76.960246),
@@ -79,7 +85,7 @@ $(document).ready(function(){
     new google.maps.LatLng(38.90052,-76.943075),
     new google.maps.LatLng(38.902064,-76.945746), 
     new google.maps.LatLng(38.902515,-76.950327) 
-  ]
+  ]*/
 
   var oxonRun = [
     new google.maps.LatLng(38.813279,-77.019769),
