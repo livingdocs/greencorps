@@ -26,7 +26,16 @@ body, html {
 }
 
 #map_canvas{
-  margin: 0px 150px 0 150px;
+  margin: 0;
   height: 100%;
+  display: none;
+}
+
+#pano{
+  background-color:#000000;
+  position: absolute;
+  z-index:5;
+  width:100%;
+  height:100%;
   display: none;
 }
