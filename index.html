@@ -196,17 +196,14 @@ $(document).ready(function(){
           // setTimeout
 
           setTimeout(function(){
-            console.log('setting ...');
             /*myPlayer( "setMedia", {
               m4a: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4"
             });*/
 
             $('#jp_video_0').attr('src','http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4');
 
-            console.log('playing ...');
             $('#pano').fadeOut('slow');
             $('#map_canvas').fadeOut('slow', function() {
-              console.log('faded out map canvas');
               $('#jp_container_1').fadeIn('slow', function() {
                 p.play();
               });
