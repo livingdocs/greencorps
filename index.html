@@ -54,39 +54,6 @@ $(document).ready(function(){
     marvinGaye.push(new google.maps.LatLng(marvinGayeData[i],marvinGayeData[i+1]));
   }
 
-  /*var marvinGaye = [
-    new google.maps.LatLng(38.902515,-76.950327),
-    new google.maps.LatLng(38.900316,-76.954444),
-    new google.maps.LatLng(38.903914,-76.960246),
-    new google.maps.LatLng(38.906223,-76.947725),
-    new google.maps.LatLng(38.901895,-76.942335),
-    new google.maps.LatLng(38.899013,-76.9392),
-    new google.maps.LatLng(38.898673,-76.930617),
-    new google.maps.LatLng(38.898589,-76.929275),
-    new google.maps.LatLng(38.898406,-76.925622),
-    new google.maps.LatLng(38.895787,-76.921875),
-    new google.maps.LatLng(38.894541,-76.917755),
-    new google.maps.LatLng(38.891936,-76.913614),
-    new google.maps.LatLng(38.891886,-76.910663),
-    new google.maps.LatLng(38.889806,-76.914762),
-    new google.maps.LatLng(38.892913,-76.917809),
-    new google.maps.LatLng(38.894641,-76.921918),
-    new google.maps.LatLng(38.895025,-76.924761),
-    new google.maps.LatLng(38.895334,-76.926778),
-    new google.maps.LatLng(38.89652,-76.926435),
-    new google.maps.LatLng(38.897004,-76.929889),
-    new google.maps.LatLng(38.896779,-76.937732),
-    new google.maps.LatLng(38.898407,-76.93917),
-    new google.maps.LatLng(38.899109,-76.942592),
-    new google.maps.LatLng(38.892971,-76.942624),
-    new google.maps.LatLng(38.895209,-76.94918),
-    new google.maps.LatLng(38.898357,-76.946551),
-    new google.maps.LatLng(38.898482,-76.94315),
-    new google.maps.LatLng(38.90052,-76.943075),
-    new google.maps.LatLng(38.902064,-76.945746), 
-    new google.maps.LatLng(38.902515,-76.950327) 
-  ]*/
-
   var oxonRun = [
     new google.maps.LatLng(38.813279,-77.019769),
     new google.maps.LatLng(38.810135,-77.015027),
@@ -237,10 +204,10 @@ $(document).ready(function(){
             $('#jp_video_0').attr('src','http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4');
 
             console.log('playing ...');
-            $('#pano').fadeOut('fast');
-            $('#map_canvas').fadeOut('fast', function() {
+            $('#pano').fadeOut('slow');
+            $('#map_canvas').fadeOut('slow', function() {
               console.log('faded out map canvas');
-              $('#jp_container_1').fadeIn('fast', function() {
+              $('#jp_container_1').fadeIn('slow', function() {
                 p.play();
               });
             });
@@ -371,15 +338,6 @@ $(document).ready(function(){
       },
       autohide: {full: false},
       fullScreen : true
-    }).code({
-      start: 6,
-      end: 8,
-      onStart: function( options ) {
-        console.log('awesome 6');
-      },
-      onEnd: function ( options ) {
-        console.log('awesome 8');
-      }
     });
   }
 
@@ -519,7 +477,7 @@ if (top.location == self.location) {
 </head>
 <body>
   <div style="position:absolute; z-index:4; height:20px; width:200px;">
-    <audio id="park-audio" preload="auto" controls> 
+    <audio id="park-audio" preload="auto"> 
       <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.mp3" >
       <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.ogg" >
     </audio>
