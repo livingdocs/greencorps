@@ -325,6 +325,10 @@ $(document).ready(function(){
 
   var p;
 
+  p.listen('ended', function(){
+    console.log('boom ended');
+  });
+
   function initPopcorn(id) {
     $('.panel-num').text('loading...');
     p = Popcorn.jplayer(id, video['mp4'], {
