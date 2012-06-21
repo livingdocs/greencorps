@@ -191,7 +191,7 @@ $(document).ready(function(){
       }
   })
   .code({
-      start: 50,
+      start: 60,
       onStart: function( options ) {
         var myLatlng = new google.maps.LatLng(38.897478,-76.925906);
         var marker = new google.maps.Marker({
@@ -203,7 +203,7 @@ $(document).ready(function(){
   })
   .code({
       start: 46,
-      end: 56,
+      end: 62,
       onStart: function( options ) {
         marvinGayePoly.setMap(map);
         setTimeout(function () {
@@ -225,6 +225,26 @@ $(document).ready(function(){
           console.log('pano opend')
           var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
           map.setStreetView(panorama);
+
+          // setTimeout
+
+          setTimeout(function(){
+            console.log('setting ...');
+            /*myPlayer( "setMedia", {
+              m4a: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4"
+            });*/
+
+            $('#jp_video_0').attr('src','http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4');
+
+            console.log('playing ...');
+            $('#pano').fadeOut('fast');
+            $('#map_canvas').fadeOut('fast', function() {
+              console.log('faded out map canvas');
+              $('#jp_container_1').fadeIn('fast', function() {
+                p.play();
+              });
+            });
+          },7000);
         });
         
       }
@@ -339,9 +359,11 @@ $(document).ready(function(){
 
   var volumeBar = $('.jp-volume-bar');
 
+  var p;
+
   function initPopcorn(id) {
     $('.panel-num').text('loading...');
-    var p = Popcorn.jplayer(id, video['mp4'], {
+    p = Popcorn.jplayer(id, video['mp4'], {
       size: {
           width: "100%",
           height: "100%",
