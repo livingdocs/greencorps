@@ -164,21 +164,70 @@ $(document).ready(function(){
   var parkAudio = Popcorn( "#park-audio" )
   .code({
       start: 5,
+      end: 18,
       onStart: function( options ) {
         oxonRunPoly.setMap(map);
+        map.setZoom(13);
+        map.setCenter(new google.maps.LatLng(38.826057,-76.990325));
+      },
+      onEnd: function( options ) {
+        map.setZoom(12);
+        map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
       }
     })
   .code({
-      start: 22,
+      start: 21,
+      end: 40,
       onStart: function( options ) {
         meridianHillPoly.setMap(map);
+        setTimeout(function () {
+          map.setZoom(14);
+          map.setCenter(new google.maps.LatLng(38.92155,-77.035781));
+        }, 1500);
+      },
+      onEnd: function( options ) {
+        map.setZoom(12);
+        map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
+      }
+  })
+  .code({
+      start: 50,
+      onStart: function( options ) {
+        var myLatlng = new google.maps.LatLng(38.897478,-76.925906);
+        var marker = new google.maps.Marker({
+            position: myLatlng, 
+            map: map,
+            title:"Isaiah"
+        }); 
       }
   })
   .code({
       start: 46,
+      end: 56,
       onStart: function( options ) {
         marvinGayePoly.setMap(map);
-      } 
+        setTimeout(function () {
+          map.setZoom(14);
+          map.setCenter(new google.maps.LatLng(38.899639,-76.936135));
+        }, 500);
+      },
+      onEnd: function(){
+        var isaiah = new google.maps.LatLng(38.897478,-76.925906);
+        var panoramaOptions = {
+          position: isaiah,
+          pov: {
+            heading: 90,
+            pitch: 5,
+            zoom: 1
+          }
+        };
+        $('#pano').fadeIn('slow', function() {
+          console.log('pano opend')
+          var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+          map.setStreetView(panorama);
+        });
+        
+      }
   });
 
   var video = [],
@@ -370,8 +419,8 @@ $(document).ready(function(){
 
     var myOptions = {
       zoom: 12,
-      center: new google.maps.LatLng(38.925156,-77.013424),
-      mapTypeId: google.maps.MapTypeId.HYBRID
+      center: new google.maps.LatLng(38.88059,-77.004034),
+      mapTypeId: google.maps.MapTypeId.SATELLITE
     };
 
     map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
@@ -447,10 +496,13 @@ if (top.location == self.location) {
 
 </head>
 <body>
-  <audio id="park-audio" preload="auto"> 
-    <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.mp3" >
-    <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.ogg" >
-  </audio>
+  <div style="position:absolute; z-index:4; height:20px; width:200px;">
+    <audio id="park-audio" preload="auto" controls> 
+      <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.mp3" >
+      <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.ogg" >
+    </audio>
+  </div>
+  <div id="pano"></div>
   <div id="map_canvas"></div>
   <div class="app-hldr">
     <div class="player-hldr">
