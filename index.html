@@ -4,7 +4,7 @@
  - http://www.opensource.org/licenses/mit-license.php
  - http://www.gnu.org/copyleft/gpl.html
  
- Authors: Mark Boas - @maboa 
+ Authors: Cole '@theCole' Gillispie - , Mark '@maboa' Boas
 
 -->
 <!DOCTYPE html>
@@ -346,6 +346,8 @@ $(document).ready(function(){
       map.setStreetView(panorama);
       // setTimeout
       setTimeout(function(){
+
+
         $('#jp_video_0').attr('src',o.mp4);
 
         $('#pano').fadeOut('slow');
@@ -613,6 +615,15 @@ $(document).ready(function(){
     }
   }
 
+  $('.go').click(function(){
+    console.log('here');
+    $('.title').fadeOut('fast');
+    $('.title').remove();
+    $('.player-hldr').fadeIn('fast');
+    p.play();
+    return false;
+  });
+
 });
 
 
@@ -638,6 +649,9 @@ if (top.location == self.location) {
 }
 */
 
+
+
+
 </script>
 <script type="application/javascript" src="js/add2home.js"></script>
 
@@ -661,6 +675,15 @@ if (top.location == self.location) {
 
 </head>
 <body>
+  <div class="title">
+  <h1 class="title-header">Green Corps</h1>
+  <p>The feature-length documentary Green Corps (working title) explores how public relief programs have turned to the land to rebuild people's lives during times of economic decline in America.</p>
+  <p>The film follows the lives of people employed by the modern-day DC Green Corps, an urban forestry job training program inspired by the New Deal-era Civilian Conservation Corps.</p> 
+  <p>This 'walking tour' prototype, developed during a Mozilla Livingdocs 'Hackathon' at Silverdocs 2012, provides a framework for the Green Corps trainees to guide audiences on a tour of their neighborhoods and the green spaces where they live.</p>
+  <p class="action-btn"><a class="go" href="#">GO ON THE TOUR</a></p>
+  <p class="action">For more information on the film, visit <a href="meridianhillpictures.com">meridianhillpictures.com</a></p>  
+  </div>
+
   <div id="closeStreetView" style="z-index:9999; background-color:#333; font-size:16px; color:white; display:none; padding:15px; position:absolute; top:10px; right:10px; cursor:pointer;">Watch other trainees</div>
   <div style="position:absolute; z-index:4; height:20px; width:200px;">
     <audio id="park-audio" preload="auto"> 
@@ -671,7 +694,7 @@ if (top.location == self.location) {
   <div id="pano"></div>
   <div id="map_canvas"></div>
   <div class="app-hldr">
-    <div class="player-hldr">
+    <div class="player-hldr" style="display:none">
       <div id="jp_container_1" class="jp-video jp-video-full">
         <div id="jquery_jplayer_1" class="jp-jplayer"></div>
           <!--main containers for our controls-->
