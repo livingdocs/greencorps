@@ -4,40 +4,29 @@
  - http://www.opensource.org/licenses/mit-license.php
  - http://www.gnu.org/copyleft/gpl.html
  
- Authors: Cole '@theCole' Gillispie - , Mark '@maboa' Boas
+ Authors: Cole '@theCole' Gillespie and Mark '@maboa' Boas
 
 -->
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset=utf-8 />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />  
 
 <title>Greencorps</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <link href="css/main.css" rel="stylesheet" type="text/css" />
-<link href="skin/orman.css" rel="stylesheet" type="text/css" />
-<link href="css/add2home.css" rel="stylesheet" type="text/css" />
-
-<link rel="apple-touch-icon" href="icon-small.png" />
-<link rel="apple-touch-icon" sizes="72x72" href="icon-med.png" />
-<link rel="apple-touch-icon" sizes="114x114" href="icon-large.png" />
-<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>-->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
-<script type="text/javascript" src="js/popcorn-ie8.js"></script>
-<script type="text/javascript" src="js/popcorn.js"></script>
-<script type="text/javascript" src="js/jquery.grab.js"></script>
-<script type="text/javascript" src="js/popcorn.player.js"></script>
-<script type="text/javascript" src="js/popcorn.jplayer.js"></script>
+<script type="text/javascript" src="js/popcorn-ie8.min.js"></script>
+<script type="text/javascript" src="js/popcorn.min.js"></script>
 <script type="text/javascript" src="js/popcorn.code.js"></script>
 
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
+
+  //console.log('canPlay WebM = '+$('#park-video')[0].canPlayType('video/webm'));
 
   var meridianHillData = [38.923127,-77.036394,38.919188,-77.036405,38.919238,-77.034817,38.920615,-77.034935,38.920882,-77.035225,38.923186,-77.035407];
   
@@ -88,211 +77,169 @@ $(document).ready(function(){
     fillColor: "#FF0000",
     fillOpacity: 0.35
   });
+  
 
-  var initialPlayerBool = false,
-      globalVideoSource,
+  var globalVideoSource,
       pinsAreDropped = false,
       globalPov = 90;
 
-  var parkAudio = Popcorn( "#park-audio" )
+  var introVideo;
+  var parkAudio;
+  var parkVideo;
+
+
+  // popcorn init event
+
+  //console.log('init');
+
+  introVideo = Popcorn( "#intro-video" );
+  parkVideo = Popcorn( "#park-video" );
+
+  parkAudio = Popcorn( "#park-audio" ) 
   .code({
-      start: 5,
-      end: 18,
-      onStart: function( options ) {
-        oxonRunPoly.setMap(map);
-        map.setZoom(13);
-        map.setCenter(new google.maps.LatLng(38.826057,-76.990325));
-      },
-      onEnd: function( options ) {
-        map.setZoom(12);
-        map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
-      }
-    })
-  .code({
-      start: 21,
-      end: 40,
-      onStart: function( options ) {
-        meridianHillPoly.setMap(map);
-        setTimeout(function () {
-          map.setZoom(14);
-          map.setCenter(new google.maps.LatLng(38.92155,-77.035781));
-        }, 1500);
-      },
-      onEnd: function( options ) {
-        map.setZoom(12);
-        map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
-      }
+    start: 5,
+    enpanorama: 18,
+    onStart: function( options ) {
+      oxonRunPoly.setMap(map);
+      map.setZoom(13);
+      map.setCenter(new google.maps.LatLng(38.826057,-76.990325));
+    },
+    onEnd: function( options ) {
+      map.setZoom(12);
+      map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
+    }
   })
   .code({
-      start: 60,
-      onStart: function( options ) {
-        var myLatlng = new google.maps.LatLng(38.897478,-76.925906);
-        var marker = new google.maps.Marker({
-            position: myLatlng, 
-            map: map,
-            title:"Isaiah",
-            animation: google.maps.Animation.DROP
-        }); 
-      }
+    start: 21,
+    end: 40,
+    onStart: function( options ) {
+      meridianHillPoly.setMap(map);
+      setTimeout(function () {
+        map.setZoom(14);
+        map.setCenter(new google.maps.LatLng(38.92155,-77.035781));
+      }, 1500);
+    },
+    onEnd: function( options ) {
+      map.setZoom(12);
+      map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
+    }
   })
   .code({
-      start: 46,
-      end: 62,
-      onStart: function( options ) {
-        marvinGayePoly.setMap(map);
-        setTimeout(function () {
-          map.setZoom(14);
-          map.setCenter(new google.maps.LatLng(38.899639,-76.936135));
-        }, 500);
-      },
-      onEnd: function(){
-        var isaiah = new google.maps.LatLng(38.897478,-76.925906);
-        var panoramaOptions = {
-          position: isaiah,
-          pov: {
-            heading: 90,
-            pitch: 5,
-            zoom: 1
-          }
-        };
-        $('#pano').fadeIn('slow', function() {
-          console.log('pano opend')
-          var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
-          map.setStreetView(panorama);
-
-          // setTimeout
-          setTimeout(function(){
-            /*myPlayer( "setMedia", {
-              m4a: "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4"
-            });*/
-
-            $('#jp_video_0').attr('src','http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4');
-
-            $('#pano').fadeOut('slow');
-            $('#map_canvas').fadeOut('fast', function() {
-              $('#jp_container_1').fadeIn('fast', function() {
-                p.play();
-              });
-            });
-          },7000);
-        });
-        
-      }
-  });
-
-  var video = [],
-      controlsVisible = true,
-      myPlayer = $("#jquery_jplayer_1"),
-      map;
-
-  video['webm'] = "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/HackathonIntro4.mp4";
-  video['mp4'] = "http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/HackathonIntro4.mp4";
-
-  myPlayer.bind($.jPlayer.event.ready, function() {
-    
-    if(!($.browser.msie && $.browser.version < 9)) {
-        initGrabControl();
+    start: 60,
+    onStart: function( options ) {
+      var myLatlng = new google.maps.LatLng(38.897478,-76.925906);
+      var marker = new google.maps.Marker({
+        position: myLatlng, 
+        map: map,
+        title:"Isaiah",
+        animation: google.maps.Animation.DROP
+      }); 
     }
-
-    // check for touch on video to activate controls
-    document.getElementsByClassName('player-hldr')[0].addEventListener('touchstart', function(e) {
-      if (controlsVisible === false) {
-        $('.jp-interface').fadeIn('fast',function() {
-          controlsVisible = true;
-        });
-        e.preventDefault();
-      }
-        
-    }, false);
-
-    document.getElementsByClassName('player-hldr')[0].addEventListener('touchend', function(e) {
-      if (controlsVisible === true) {
-        $('.jp-interface').delay(1500).fadeOut('slow',function() {
-          controlsVisible = false;
-        });
-        e.preventDefault();
-      }
-    }, false);
-  });
-
-  myPlayer.bind("jPlayerPopcornReady", function() {
-    checkStartParam();
-  });
-
-  initPopcorn("#jquery_jplayer_1");
-
-  function initGrabControl() {
-
-    // jquery.grab event properties: event.position.x, event.position.y
-
-    var dragEventPeriod = 250,
-      dragEventOccurred = false,
-      dragEventLimiterId = null,
-      dragEventX = 0;
-
-    $('#jp-play-drag').grab({
-
-      onstart: function(){
-        dragEventOccurred = false;
-        clearInterval(dragEventLimiterId);
-        dragEventLimiterId = setInterval(function() {
-          if(dragEventOccurred) {
-            grabBar(dragEventX);
-            dragEventOccurred = false;
-          }
-        }, dragEventPeriod);
-      }, onmove: function(event){
-        dragEventX = event.position.x;
-        dragEventOccurred = true;
-      }, onfinish: function(event){
-        clearInterval(dragEventLimiterId);
-        dragEventOccurred = false;
-      }
-    });
-
-    $('#jp-play-volume').grab({
-
-      onstart: function(){
-        //console.log('mooo');
-        //console.log('jPlayerObj.css.jq.seekBar');
-        dragEventOccurred = false;
-        clearInterval(dragEventLimiterId);
-        dragEventLimiterId = setInterval(function() {
-          if(dragEventOccurred) {
-            grabBarVol(dragEventX);
-            dragEventOccurred = false;
-          }
-        }, dragEventPeriod);
-      }, onmove: function(event){
-        dragEventX = event.position.x;
-        dragEventOccurred = true;
-      }, onfinish: function(event){
-        clearInterval(dragEventLimiterId);
-        dragEventOccurred = false;
-      }
-    });
-  }
-
-
-  function grabBar(xDrag) { // Handles seekBar dragging
-    var jPlayerObj = myPlayer.data("jPlayer");
-    if(jPlayerObj.css.jq.seekBar) {
-      var offset = jPlayerObj.css.jq.seekBar.offset();
-      var x = xDrag - offset.left;
-      var w = jPlayerObj.css.jq.seekBar.width();
-      var p = 100*x/w;
-      myPlayer.jPlayer("playHead", p);
+  })
+  .code({
+    start: 46,
+    end: 62,
+    onStart: function( options ) {
+      marvinGayePoly.setMap(map);
+      setTimeout(function () {
+        map.setZoom(14);
+        map.setCenter(new google.maps.LatLng(38.899639,-76.936135));
+      }, 500);
+    },
+    onEnd: function(){
+      var isaiah = new google.maps.LatLng(38.897478,-76.925906);
+      var panoramaOptions = {
+        position: isaiah,
+        pov: {
+          heading: 90,
+          pitch: 5,
+          zoom: 1
+        }
+      };
+      $('#pano').fadeIn('slow', function() {
+        //console.log('pano opend')
+        var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+        map.setStreetView(panorama);
+      });        
     }
+  });
 
-    _gaq.push(['_trackEvent', 'Greencorps', 'Progress bar', 'dragged']);
+  introVideo.on('ended',function(){
+      $('.player-hldr').fadeOut('fast', function() {
+      //console.log('faded out player');
+        $('#map_canvas').fadeIn('fast', function() {
+          initializeGoogleMap();
+          parkAudio.play();
+          $('#temp-audio-controls').show();
+        });
+      });
+  });
+
+  parkAudio.on('ended',function(){
+    // start new piece of video 7 seconds after parkAudio has finished
+    setTimeout(function(){
+      $('#pano').fadeOut('fast');
+      $('#map_canvas').fadeOut('fast', function() {
+        //console.log('faded out player');
+        $('.player-hldr').fadeIn('fast', function() {
+          parkVideo.play();
+          $('#intro-video').hide();
+          $('#park-video').show();
+          $('#temp-audio-controls').hide();
+        });
+      });
+    },7000);
+  });
+
+  parkVideo.on('ended',function(){
+    //console.log('park ended');
+    var panoramaOptions = {
+      position: globalVideoSource,
+      pov: {
+        heading: globalPov,
+        pitch: 5,
+        zoom: 1
+      }
+    };
+        
+    $('#pano').fadeIn('fast', function() {
+      $('#closeStreetView').show();
+      //console.log('pano opend');
+      var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+      map.setStreetView(panorama);
+
+      $('#closeStreetView').click(function(){
+        $('#map_canvas').show();
+        $(this).hide();
+        panorama.setVisible(false);
+        $('#pano').hide();
+        setTimeout(function(){
+          if(!pinsAreDropped){
+            map.setZoom(12);
+            map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
+            dropPins();
+          } 
+        }, 1000);
+      });
+    });
+  });
+
+  var timeline = null;
+
+  function initializeGoogleMap() {
+
+    var myOptions = {
+      zoom: 12,
+      center: new google.maps.LatLng(38.88059,-77.004034),
+      mapTypeId: google.maps.MapTypeId.SATELLITE
+    };
+
+    map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+
   }
-
-  var volumeBar = $('.jp-volume-bar');
-
-  var p;
 
   function initNewVideo(o){
-    console.log('initNewVideo(%o)', o);
+    //console.log('initNewVideo(%o)', o);
     globalPov = (o.pov) ? o.pov : 90;
     globalVideoSource = new google.maps.LatLng(o.lat,o.lng);
     var panoramaOptions = {
@@ -304,19 +251,23 @@ $(document).ready(function(){
       }
     };
     $('#pano').fadeIn('slow', function() {
-      console.log('pano opened');
+      //console.log('pano opened');
       var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
       map.setStreetView(panorama);
       // setTimeout
       setTimeout(function(){
 
-
-        $('#jp_video_0').attr('src',o.mp4);
+        if ($('#park-video')[0].canPlayType('video/webm')) {
+          $('#park-video').attr('src',o.mp4.replace('.mp4','.webm'));
+        } else {
+          $('#park-video').attr('src',o.mp4);
+        }
 
         $('#pano').fadeOut('slow');
+
         $('#map_canvas').fadeOut('fast', function() {
-          $('#jp_container_1').fadeIn('fast', function() {
-            p.play();
+          $('.player-hldr').fadeIn('fast', function() {
+            parkVideo.play();
           });
         });
       },4000);
@@ -435,206 +386,23 @@ $(document).ready(function(){
         pov: 330
       }
     ];
-    console.log('dropping pins')
+    //console.log('dropping pins')
     $(pins).each(function(i,o) {
-      console.log(o);
+      //console.log(o);
         dropPin(o);
     });
   }
 
-  p.listen('ended', function(){
-    console.log('boom ended');
-    if(initialPlayerBool === true){
-        var panoramaOptions = {
-          position: globalVideoSource,
-          pov: {
-            heading: globalPov,
-            pitch: 5,
-            zoom: 1
-          }
-        };
-        $('#pano').fadeIn('fast', function() {
-          $('#closeStreetView').css('display', 'block');
-          console.log('pano opend');
-          var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
-          map.setStreetView(panorama);
-          $('#closeStreetView').click(function(){
-            $(this).css('display', 'none');
-            panorama.setVisible(false);
-            $('#pano').css('display', 'none');
-            setTimeout(function(){
-              if(!pinsAreDropped){
-                map.setZoom(12);
-                map.setCenter(new google.maps.LatLng(38.88059,-77.004034));
-                dropPins();
-              } 
-            }, 1000);
-          });
-        });
-    }
-  });
-
-  function initPopcorn(id) {
-    $('.panel-num').text('loading...');
-    p = Popcorn.jplayer(id, video['mp4'], {
-      size: {
-          width: "100%",
-          height: "100%",
-          cssClass: "jp-video-full"
-      },
-      autohide: {full: false},
-      fullScreen : true
-    });
-  }
-
-
-  function checkStartParam() {
-    if (getUrlVars()["s"] != null) {
-      var s = parseInt(getUrlVars()["s"])/10;
-      myPlayer.jPlayer("play",s);
-      clearInstructions();
-    }
-  }
-
-  myPlayer.bind($.jPlayer.event.timeupdate, function(event) {
-    $('.jp-video-busy').hide();
-  });
-
-  myPlayer.bind($.jPlayer.event.pause, function(event) {
-    $('.jp-video.play').show();
-
-    _gaq.push(['_trackEvent', 'Greencorps', 'Pause', 'Clicked']);
-  });
-
-
-  myPlayer.bind($.jPlayer.event.play, function() {
-    $('.jp-video-busy').show();
-  });
-
-  $('.jp-play').click(function() {
-
-    $('.jp-video-busy').show();
-
-    _gaq.push(['_trackEvent', 'Greencorps', 'Play', 'jPlayer Play clicked']);
-  });
-
-  $('.jp-progress').click(function() {
-    $('.jp-video-busy').show();
-    $('.fs-info:visible').hide();
-
-    _gaq.push(['_trackEvent', 'Greencorps', 'Play', 'jPlayer Progress bar clicked']);
-  });
-
-  function grabBarVol(xDrag) { // Handles seekBar dragging
-    var jPlayerObj = myPlayer.data("jPlayer");
-    if(volumeBar) {
-      var offset = volumeBar.offset();
-      var x = xDrag - offset.left;
-      var w = volumeBar.width();
-      var v = x/w;
-      myPlayer.jPlayer("volume", v); // Vol is a ratio, 0 to 1.
-    }
-
-    _gaq.push(['_trackEvent', 'Greencorps', 'Volume bar', 'dragged']);
-  }
-
-  var timeline = null;
-
-  function initializeGoogleMap() {
-
-    var myOptions = {
-      zoom: 12,
-      center: new google.maps.LatLng(38.88059,-77.004034),
-      mapTypeId: google.maps.MapTypeId.SATELLITE
-    };
-
-    map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
-
-  }
-
-  myPlayer.bind($.jPlayer.event.ended, function() {
-    $('#jp_container_1').fadeOut('fast', function() {
-      console.log('faded out player');
-      $('#map_canvas').fadeIn('fast', function() {
-        if(!initialPlayerBool){
-          console.log('reset map')
-          globalVideoSource = new google.maps.LatLng(38.897478,-76.925906);
-          initialPlayerBool = true;
-          initializeGoogleMap();
-          parkAudio.play();
-        }
-      });
-    });
-  });
-
-
-
-  function checkStartParam() {
-    if (getUrlVars()["s"] != null) {    
-
-      var s = parseInt(getUrlVars()["s"]);    
-      myPlayer.jPlayer("play",s);    
-      _gaq.push(['_trackEvent', 'Greencorps', 'Start parameter', 'Triggered at '+s]);
-    }
-  }
-
   $('.go').click(function(){
-    console.log('here');
     $('.title').fadeOut('fast');
-    $('.title').remove();
     $('.player-hldr').fadeIn('fast');
-    p.play();
+    introVideo.play();
     return false;
   });
 
+
 });
-
-
-
-$('.player-hldr').live('hover', function() {
-    $('.jp-interface').fadeIn('fast');
-});
-
-$('.player-hldr').live('mouseleave', function() {
-  $('.jp-interface').not(':hidden').fadeOut('slow');
-});
-
-
-var addToHomeConfig = {
-  autostart: false
-};
-
-/*
-if (top.location == self.location) {
-  setTimeout(function () {
-     addToHome.show();
-  }, 1000);
-}
-*/
-
-
-
-
 </script>
-<script type="application/javascript" src="js/add2home.js"></script>
-
-<!-- GA @start code -->
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-
-  _gaq.push(['_setAccount', 'UA-3557377-3']); // happyworm.com
-  
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-<!-- GA @end code -->
 
 </head>
 <body>
@@ -647,8 +415,9 @@ if (top.location == self.location) {
   <p class="action">For more information on the film, visit <a href="meridianhillpictures.com">meridianhillpictures.com</a></p>  
   </div>
 
-  <div id="closeStreetView" style="z-index:9999; background-color:#333; font-size:16px; color:white; display:none; padding:15px; position:absolute; top:10px; right:10px; cursor:pointer;">Watch other trainees</div>
-  <div style="position:absolute; z-index:4; height:20px; width:200px;">
+  <div id="closeStreetView" style="display:none;">Watch other trainees</div>
+
+  <div id="temp-audio-controls" style="display:none">
     <audio id="park-audio" preload="auto"> 
       <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.mp3" >
       <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/hackathonaudio.ogg" >
@@ -658,74 +427,16 @@ if (top.location == self.location) {
   <div id="map_canvas"></div>
   <div class="app-hldr">
     <div class="player-hldr" style="display:none">
-      <div id="jp_container_1" class="jp-video jp-video-full">
-        <div id="jquery_jplayer_1" class="jp-jplayer"></div>
-          <!--main containers for our controls-->
-            <div class="jp-gui">
-              <div class="jp-video-play">
-                <span class="jp-video-play-icon"><img src="video-play.png"/></span>
-              </div>
-
-              <div class="jp-video-busy" style="display:none">
-                <span class="jp-video-busy-icon"><img src="ajax-loader.gif"/></span>
-              </div>
-
-              <div id ="fstimeline" class="fullscreen-info" style="display:none"></div>
-              <!--<div class="jp-screen-loader"></div>-->
-                <div class="jp-interface">
-                  <div class="jp-controls-holder">
-                <!--play and pause buttons-->
-                <a href="#" class="jp-play" tabindex="1">play</a>
-                <a href="#" class="jp-pause" tabindex="1">pause</a>
-                <span class="separator sep-1"></span>
-                 
-                <!--progress bar-->
-                <div class="jp-progress">
-                  <div class="jp-seek-bar">
-                      <div class="jp-play-bar"><span id="jp-play-drag"></span></div>
-                  </div>
-                </div>
-                 
-                <!--time notifications-->
-                <div class="jp-current-time"></div>
-                <span class="time-sep">/</span>
-                <div class="jp-duration"></div>
-                <span class="separator sep-2"></span>
-                 
-                <!--mute / unmute toggle-->
-                <a href="javascript:;" class="jp-mute" tabindex="2" title="mute">mute</a>
-                <a href="javascript:;" class="jp-unmute" tabindex="2" title="unmute">unmute</a>
-                 
-                <!--volume bar-->
-                <div class="jp-volume-bar">
-                  <div class="jp-volume-bar-value"><span id="jp-play-volume" class="handle"></span></div>
-                </div>
-                 
-                <!--full screen toggle-->
-                <!--<a href="#" class="jp-full-screen" tabindex="3" title="full screen">full screen</a>
-                <a href="#" class="jp-restore-screen" tabindex="3" title="restore screen">restore screen</a>
-
-                <div class="jp-quality">
-                  <a class="quality-btn" q="lo" href="#">low</a>
-                  <a class="quality-btn" q="me" href="#" style="display:none">med</a>
-                  <a class="quality-btn" q="hi" href="#" style="display:none">high</a>
-                  <a class="quality-btn" q="hd" href="#" style="display:none">HD</a>
-                </div>-->
-
-                  </div><!--end jp-controls-holder-->
-                </div><!--end jp-interface-->
-            </div><!--end jp-gui-->
-
-          <!--unsupported message-->
-          <div class="jp-no-solution">
-            <span>Update Required</span>
-            The version of Flash you are using is not supported.
-          </div>
+      <video id="intro-video" preload="auto" controls style="width:100%;"> 
+        <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/HackathonIntro4.mp4" >
+        <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/HackathonIntro4.webm" >
+      </video>
+      <video id="park-video" preload="auto" controls style="width:100%;display:none"> 
+        <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.mp4" >
+        <source src="http://videos-origin.mozilla.org/serv/webmademovies/silverhacks/Isaiah%20-Vimeo%20HD.webm" >
+      </video>
       
-        </div><!--end jp_container_1-->
-      </div>
     </div> <!-- end .player-hldr -->
-
   </div> <!-- end .app-hldr -->
 </body>
 

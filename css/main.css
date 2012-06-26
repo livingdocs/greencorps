@@ -74,3 +74,22 @@ a:link {
   position:relative;
   top:1px;
 }
+
+#temp-audio-controls {
+  position:absolute; 
+  z-index:4; 
+  height:20px; 
+  width:200px; 
+}
+
+#closeStreetView {
+  z-index:9999; 
+  background-color:#333; 
+  font-size:16px; 
+  color:white; 
+  padding:15px;
+  position:absolute; 
+  top:10px; 
+  right:10px; 
+  cursor:pointer;
+}
