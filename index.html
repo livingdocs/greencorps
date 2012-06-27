@@ -29,7 +29,7 @@ $(document).ready(function(){
   //console.log('canPlay WebM = '+$('#park-video')[0].canPlayType('video/webm'));
 
   var meridianHillData = [38.923127,-77.036394,38.919188,-77.036405,38.919238,-77.034817,38.920615,-77.034935,38.920882,-77.035225,38.923186,-77.035407];
-  
+
   var marvinGayeData = [38.902515,-76.950327,38.900316,-76.954444,38.903914,-76.960246,38.906223,-76.947725,38.901895,-76.942335,38.899013,-76.9392,38.898673,-76.930617,38.898589,-76.929275,38.898406,-76.925622,38.895787,-76.921875,38.898406,-76.925622,38.895787,-76.921875,38.894541,-76.917755,38.891936,-76.913614,38.891886,-76.910663,38.889806,-76.914762,38.892913,-76.917809,38.894641,-76.921918,38.895025,-76.924761,38.895334,-76.926778,38.89652,-76.926435,38.897004,-76.929889,38.896779,-76.937732,38.898407,-76.93917,38.899109,-76.942592,38.892971,-76.942624,38.895209,-76.94918,38.898357,-76.946551,38.898482,-76.94315,38.90052,-76.943075,38.902064,-76.945746,38.902515,-76.950327];
 
   var oxonRunData = [38.813279,-77.019769,38.810135,-77.015027,38.814964,-77.010133,38.819137,-77.008815,38.820358,-77.005134,38.824412,-77.00552,38.825716,-77.005274,38.82921,-77.005692,38.829327,-77.005349,38.83389,-77.002677,38.837434,-76.995042,38.838659,-76.993119,38.839769,-76.988389,38.843649,-76.972749,38.844563,-76.970248,38.846854,-76.966078,38.850531,-76.96052,38.85079,-76.958439,38.849837,-76.95831,38.848876,-76.959705,38.845208,-76.964061,38.843328,-76.968159,38.842509,-76.969575,38.841197,-76.970369,38.840236,-76.973717,38.836204,-76.981855,38.837608,-76.983558,38.837608,-76.985361,38.83668,-76.986981,38.83795,-76.988225,38.836839,-76.993118,38.83592,-76.995832,38.833204,-77.000327,38.831081,-77.003535,38.825414,-77.003439,38.823976,-77.004361,38.820715,-77.00234,38.811375,-77.006817,38.805418,-77.000611,38.79693,-77.012649,38.805859,-77.022219,38.813499,-77.019704];
@@ -77,7 +77,6 @@ $(document).ready(function(){
     fillColor: "#FF0000",
     fillOpacity: 0.35
   });
-  
 
   var globalVideoSource,
       pinsAreDropped = false,
@@ -133,7 +132,7 @@ $(document).ready(function(){
         map: map,
         title:"Isaiah",
         animation: google.maps.Animation.DROP
-      }); 
+      });
     }
   })
   .code({
@@ -160,7 +159,7 @@ $(document).ready(function(){
         //console.log('pano opend')
         var panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
         map.setStreetView(panorama);
-      });        
+      });
     }
   });
 
@@ -201,7 +200,7 @@ $(document).ready(function(){
         zoom: 1
       }
     };
-        
+
     $('#pano').fadeIn('fast', function() {
       $('#closeStreetView').show();
       //console.log('pano opend');
@@ -394,10 +393,11 @@ $(document).ready(function(){
   }
 
   $('.go').click(function(){
-    $('.title').fadeOut('fast');
-    $('.player-hldr').fadeIn('fast');
-    introVideo.play();
-    return false;
+    $('.title').fadeOut('fast', function(){
+        $('.player-hldr').fadeIn('fast');
+        introVideo.play();
+        return false;
+    });
   });
 
 
@@ -407,12 +407,12 @@ $(document).ready(function(){
 </head>
 <body>
   <div class="title">
-  <h1 class="title-header">Green Corps</h1>
-  <p>The feature-length documentary Green Corps (working title) explores how public relief programs have turned to the land to rebuild people's lives during times of economic decline in America.</p>
-  <p>The film follows the lives of people employed by the modern-day DC Green Corps, an urban forestry job training program inspired by the New Deal-era Civilian Conservation Corps.</p> 
-  <p>This 'walking tour' prototype, developed during a Mozilla Livingdocs 'Hackathon' at Silverdocs 2012, provides a framework for the Green Corps trainees to guide audiences on a tour of their neighborhoods and the green spaces where they live.</p>
-  <p class="action-btn"><a class="go" href="#">GO ON THE TOUR</a></p>
-  <p class="action">For more information on the film, visit <a href="meridianhillpictures.com">meridianhillpictures.com</a></p>  
+    <h1 class="title-header">Green Corps</h1>
+    <p>The feature-length documentary Green Corps (working title) explores how public relief programs have turned to the land to rebuild people's lives during times of economic decline in America.</p>
+    <p>The film follows the lives of people employed by the modern-day DC Green Corps, an urban forestry job training program inspired by the New Deal-era Civilian Conservation Corps.</p> 
+    <p>This 'walking tour' prototype, developed during a Mozilla Livingdocs 'Hackathon' at Silverdocs 2012, provides a framework for the Green Corps trainees to guide audiences on a tour of their neighborhoods and the green spaces where they live.</p>
+    <p class="action-btn"><a class="go" href="#">GO ON THE TOUR</a></p>
+    <p class="action">For more information on the film, visit <a href="meridianhillpictures.com">meridianhillpictures.com</a></p>  
   </div>
 
   <div id="closeStreetView" style="display:none;">Watch other trainees</div>
